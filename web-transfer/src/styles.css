@@ -1,1 +1,7 @@
 @import '~bootstrap/dist/css/bootstrap.css';
+
+:root {
+    --rgr-background-white: #f7f7f9;
+    --rgr-hover-color: #e74e56;
+
+  }
