@@ -20,29 +20,15 @@
           </app-col>
           <app-col col_span="6">
             <app-datepicker labelText="Data para transferencia" id="transferDate" name="transferDate"
-              [startsToday]='true' [(ngModel)]="schedule.transferDate" />
+              [startsToday]='true' [(value)]="schedule.transferDate" />
           </app-col>
         </app-row>
         <app-row>
-          <app-col col_span="6">
-            <app-datepicker labelText="Data para transferencia" id="transferDate" name="transferDate"
-              [startsToday]='true' [(ngModel)]="schedule.transferDate" />
-          </app-col>
-          <app-col col_span="6">
+          <app-col col_span="12">
             <app-currency labelText="Taxa" id="fee" name="fee" [disabled]='true'
               [(value)]="schedule.fee"></app-currency>
           </app-col>
         </app-row>
-
-        <app-row>
-          <app-col col_span="12">
-          <app-input [(value)]="schedule.source" [disabled]='true' />
-          </app-col>
-          
-        </app-row>
-
-
-        
         <app-row customClasses="justify-content-center" customStyles="padding-top: 10px;">
           <app-col col_span="4" customClasses="text-center">
               <button type="submit" class="btn btn-primary">Salvar</button>
