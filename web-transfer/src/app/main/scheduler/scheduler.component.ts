@@ -7,4 +7,17 @@ import { Component } from '@angular/core';
 })
 export class SchedulerComponent {
 
+  schedule = {
+    source: '654654',
+    destiny: '654654654',
+    amount: 321654,
+    transferDate: '',
+    fee: 666.67
+  };
+
+  currentDate = new Date();
+
+  onSubmit() {
+    console.log(this.schedule);
+  }
 }

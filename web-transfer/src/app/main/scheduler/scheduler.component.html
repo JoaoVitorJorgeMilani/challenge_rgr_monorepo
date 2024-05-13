@@ -1,21 +1,55 @@
+<div class="card mt-2 bg-light mb-3 ">
+  <h6 class="card-header">Scheduler</h6>
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()">
+      <app-grid>
+        <app-row>
+          <app-col col_span="6">
+            <app-input labelText="Origem" type="text" id="source" name="source" placeholder="XXXXXXXXXX"
+              mask="0000000000" [(value)]="schedule.source"/>
+          </app-col>
+          <app-col col_span="6">
+            <app-input labelText="Destino" type="text" id="destiny" name="destiny" placeholder="XXXXXXXXXX"
+              mask="0000000000" [(value)]="schedule.destiny"/>
+          </app-col>
+        </app-row>
+        <app-row>
+          <app-col col_span="6">
+            <app-currency labelText="Valor" id="amount" name="amount" placeholder="Valor"
+              [(value)]="schedule.amount"></app-currency>
+          </app-col>
+          <app-col col_span="6">
+            <app-datepicker labelText="Data para transferencia" id="transferDate" name="transferDate"
+              [startsToday]='true' [(ngModel)]="schedule.transferDate" />
+          </app-col>
+        </app-row>
+        <app-row>
+          <app-col col_span="6">
+            <app-datepicker labelText="Data para transferencia" id="transferDate" name="transferDate"
+              [startsToday]='true' [(ngModel)]="schedule.transferDate" />
+          </app-col>
+          <app-col col_span="6">
+            <app-currency labelText="Taxa" id="fee" name="fee" [disabled]='true'
+              [(value)]="schedule.fee"></app-currency>
+          </app-col>
+        </app-row>
 
-<app-grid >
-    <app-row>
-        <app-col col_span="8" customStyles='background-color: pink'>
-            pink
-        </app-col>
-        <app-col col_span="4" customStyles='background-color: red'>
-            red
-        </app-col>
-    </app-row>
-    <app-row>
-        <app-col col_span="2" customStyles='background-color: pink'>
-            pink
-        </app-col>
-        <app-col col_span="10" customStyles='background-color: red'>
-            red
-        </app-col>
-    </app-row>
+        <app-row>
+          <app-col col_span="12">
+          <app-input [(value)]="schedule.source" [disabled]='true' />
+          </app-col>
+          
+        </app-row>
 
-</app-grid>
 
+        
+        <app-row customClasses="justify-content-center" customStyles="padding-top: 10px;">
+          <app-col col_span="4" customClasses="text-center">
+              <button type="submit" class="btn btn-primary">Salvar</button>
+          </app-col>
+        </app-row>
+
+      </app-grid>
+    </form>
+  </div>
+</div>

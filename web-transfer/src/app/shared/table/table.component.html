@@ -1,0 +1,49 @@
+<app-grid>
+    <app-row customStyles="padding: 0px;">
+        <app-col col_span="12">
+            <div class="table-responsive ">
+                <table class="table caption-top">
+                    <caption *ngIf="hasTitle" style="font-size: large; font-weight: bold">{{ title }}</caption>
+                    <thead>
+                        <tr>
+                            <th *ngFor="let header of headers" scope="col">{{header}}</th>
+                            <th *ngIf="enableActions" scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let datum of data" [ngClass]="{ 'table-danger': showDataDanger(datum) }">
+                            <td *ngFor="let prop of property">
+                                <ng-container *ngIf="isCurrencyProperty(prop)">
+                                    {{ datum[getProperty(prop)] | customCurrency }}                                    
+                                </ng-container>
+                                <ng-container *ngIf="isDateProperty(prop)">
+                                    {{ datum[getProperty(prop)] | customDate }}                                    
+                                </ng-container>
+                                <ng-container *ngIf="hasNoProperty(prop)" #default>
+                                    {{ datum[getProperty(prop)] }}
+                                </ng-container>
+                            </td>
+
+                            <td colspan="3" >
+                                <div class="alert alert-danger" role="alert" *ngIf="showDataDanger(datum)">
+                                    {{ getAlertMessage(datum) }}
+                                </div>
+                            </td>
+
+                            <td *ngIf="enableActions">
+                                <button *ngIf="enableActionView" (click)="onView(datum)" type="button" class="btn btn-primary"><i
+                                        class="fa fa-eye"></i></button>
+                                <button *ngIf="enableActionEdit" (click)="onEdit(datum)" type="button" class="btn btn-success"><i
+                                        class="fa fa-edit"></i></button>
+                                <button *ngIf="enableActionDelete" (click)="onDelete(datum)" type="button" class="btn btn-danger"><i
+                                        class="fa fa-trash"></i></button>
+                                <button *ngIf="enableCustomAction" (click)="onCustom(datum)" type="button" [class]="customActionClass" ><i
+                                        [class]="customActionIcon"></i>    {{customActionText}}</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>            
+        </app-col>
+    </app-row>
+</app-grid>
