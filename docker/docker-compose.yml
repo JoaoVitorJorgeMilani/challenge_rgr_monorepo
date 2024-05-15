@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:  
+  h2:
+    container_name: rgr-h2
+    build: 
+      context: ./h2
+      dockerfile: Dockerfile
+    ports:
+      - 8082:8082
+      - 9092:9092
+    
+    
