@@ -1,4 +1,2 @@
 .mvn/
-
-!**/src/main/**/target/
-!**/src/test/**/target/
+target/
