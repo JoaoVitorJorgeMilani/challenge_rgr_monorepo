@@ -12,3 +12,20 @@ INSERT INTO transfer_taxes (days_period, tax) VALUES (20, 8.2);
 INSERT INTO transfer_taxes (days_period, tax) VALUES (30, 6.9);
 INSERT INTO transfer_taxes (days_period, tax) VALUES (40, 4.7);
 INSERT INTO transfer_taxes (days_period, tax) VALUES (50, 1.7);
+
+DROP TABLE IF EXISTS schedules;
+
+CREATE TABLE schedules (
+	id UUID NOT NULL,
+	destination VARCHAR(255) NOT NULL,
+	source VARCHAR(255) NOT NULL,
+	amount NUMERIC(20, 2) NOT NULL,
+	transfer_date DATE NOT NULL,
+	tax NUMERIC(20, 2) NOT NULL,
+	created_by VARCHAR(255) NOT NULL,
+	updated_by VARCHAR(255) NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL,
+
+	PRIMARY KEY (id)
+);

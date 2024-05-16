@@ -1,1 +1,1 @@
-docker build -t h2-database .
+docker build -t rgr-h2-img ../

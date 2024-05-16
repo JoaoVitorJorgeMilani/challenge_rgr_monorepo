@@ -9,5 +9,15 @@ services:
     ports:
       - 8082:8082
       - 9092:9092
+  
+  web-transfer:
+    container_name: rgr-web-transfer
+    build: 
+      context: ../web-transfer
+      dockerfile: Dockerfile
+    ports:
+      - "4201:80"
+    depends_on:
+      - h2      # just in case...
     
     
