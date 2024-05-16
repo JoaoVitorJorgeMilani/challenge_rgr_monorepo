@@ -23,8 +23,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   `
 })
 export class CurrencyComponent {
-  // @ViewChild('inputField') inputField!: ElementRef;
-  @Input() value!: number;
+  @Input() value?: number;
   @Input() labelText: string = '';
   @Input() id: string = '';
   @Input() name: string = '';

@@ -27,4 +27,6 @@ export class AlertComponent {
     this.successMessages.push(message)
   }
 
+  hasError()  : boolean { return this.errorMessages.length > 0 };
+
 }

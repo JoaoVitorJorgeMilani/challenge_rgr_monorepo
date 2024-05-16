@@ -37,8 +37,6 @@ export class DatepickerComponent {
   @Output() valueChange = new EventEmitter<any>();
 
   onModelChange(event: any): void {
-    console.log("MODEL CHANGED");
-    console.log(event);
     this.valueChange.emit(event);
   }
 

@@ -1,2 +1,2 @@
 npm install
-ng serve
+ng serve --configuration=development   
