@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-table',
@@ -23,7 +24,9 @@ export class TableComponent  {
   @Input() alertConditionProperty: string = '';
   @Input() alertMessage: string = '';
 
-  
+  faEye = faEye;
+  faEdit = faEdit;
+  faTrash = faTrash;  
 
   @Output() deleteItem = new EventEmitter<any>();
   @Output() editItem = new EventEmitter<any>();

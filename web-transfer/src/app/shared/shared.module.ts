@@ -15,6 +15,7 @@ import { CustomDatePipe } from './pipes/custom-date.pipe';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { FormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,9 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     CommonModule,
     FormsModule,
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    FontAwesomeModule
+
   ],
   exports: [
     RowComponent,

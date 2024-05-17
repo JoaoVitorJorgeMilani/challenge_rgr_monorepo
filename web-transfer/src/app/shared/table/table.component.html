@@ -24,21 +24,21 @@
                                 </ng-container>
                             </td>
 
-                            <td colspan="3" >
-                                <div class="alert alert-danger" role="alert" *ngIf="showDataDanger(datum)">
+                            <td colspan="3" *ngIf="showDataDanger(datum)">
+                                <div class="alert alert-danger" role="alert">
                                     {{ getAlertMessage(datum) }}
                                 </div>
                             </td>
 
                             <td *ngIf="enableActions">
-                                <button *ngIf="enableActionView" (click)="onView(datum)" type="button" class="btn btn-primary"><i
-                                        class="fa fa-eye"></i></button>
-                                <button *ngIf="enableActionEdit" (click)="onEdit(datum)" type="button" class="btn btn-success"><i
-                                        class="fa fa-edit"></i></button>
-                                <button *ngIf="enableActionDelete" (click)="onDelete(datum)" type="button" class="btn btn-danger"><i
-                                        class="fa fa-trash"></i></button>
-                                <button *ngIf="enableCustomAction" (click)="onCustom(datum)" type="button" [class]="customActionClass" ><i
-                                        [class]="customActionIcon"></i>    {{customActionText}}</button>
+                                <button *ngIf="enableActionView" (click)="onView(datum)" type="button" class="btn btn-primary btn-sm">
+                                    <fa-icon [icon]="faEye"></fa-icon></button>
+                                <button *ngIf="enableActionEdit" (click)="onEdit(datum)" type="button" class="btn btn-success btn-sm">
+                                    <fa-icon [icon]="faEdit"></fa-icon></button>
+                                <button *ngIf="enableActionDelete" (click)="onDelete(datum)" type="button" class="btn btn-danger btn-sm">
+                                    <fa-icon [icon]="faTrash"></fa-icon></button>
+                                <button *ngIf="enableCustomAction" (click)="onCustom(datum)" type="button" [class]="customActionClass" >
+                                    {{customActionText}}</button>
                             </td>
                         </tr>
                     </tbody>
