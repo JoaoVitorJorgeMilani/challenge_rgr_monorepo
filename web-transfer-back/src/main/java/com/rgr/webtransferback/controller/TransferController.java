@@ -15,16 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rgr.webtransferback.models.ScheduleDto;
 import com.rgr.webtransferback.service.ITransferService;
 import com.rgr.webtransferback.util.DevTools;
+import com.rgr.webtransferback.util.encryption.AESCrypt;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 public class TransferController {
 
     private final ITransferService service;
+    private final AESCrypt aesCrypt;
 
     @Autowired
-    public TransferController(ITransferService service){
+    public TransferController(ITransferService service, AESCrypt aesCrypt) {
         this.service = service;
+        this.aesCrypt = aesCrypt;
     }
 
     @GetMapping("/transfer/calculate")
@@ -42,5 +45,21 @@ public class TransferController {
         DevTools.dumpObjectOnConsole(schedule);
 
         return this.service.saveSchedule(schedule);        
+    }
+
+
+
+    @GetMapping("/transfer/teste")
+    public void teste(@RequestParam String encryptedString) {
+        try
+        {           
+            System.out.println("DEBUGGING Controller encrypted: " + encryptedString);
+            String decrypted = aesCrypt.decrypt(encryptedString);
+            System.out.println("DEBUGGING Controller decrypted: " + decrypted);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
