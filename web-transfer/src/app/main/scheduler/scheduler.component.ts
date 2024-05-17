@@ -13,40 +13,36 @@ export class SchedulerComponent {
 
   schedule = {
     source: '',
-    destiny: '',
+    destination: '',
     amount: 0,
     transferDate: '',
-    fee: 0
+    tax: 0
   };
-  feeCalculated: boolean = false;
+  taxCalculated: boolean = false;
 
   currentDate = new Date();
 
   get total() : number { 
-    return (this.schedule.amount >= 0 && this.schedule.fee >= 0) ? this.schedule.amount + this.schedule.fee : 0;
+    return (this.schedule.amount >= 0 && this.schedule.tax >= 0) ? this.schedule.amount + this.schedule.tax : 0;
   }
   
   constructor(private service: SchedulerService) { }
 
-  onSubmit() {
-    console.log(this.schedule);
-  }
-
-  calculateFeeFromInput() {
+  calculateTaxFromInput() {
     console.log("calculating from input")
 
     if(this.schedule.amount > 0 && !Number.isNaN(Date.parse(this.schedule.transferDate)) && Date.parse(this.schedule.transferDate) >= 0) {
-      this.calculateFee();
+      this.calculateTax();
     }
   }
 
-  calculateFee() {
-    if (this.validateFeeCalculation()) {
+  calculateTax() {
+    if (this.validateTaxCalculation()) {
       this.service.getTax(this.schedule).subscribe(
         {
           next: (tax) => {
-            this.schedule.fee = tax;
-            this.feeCalculated = true;
+            this.schedule.tax = tax;
+            this.taxCalculated = true;
           },
           error: error => {
             if(error.status){
@@ -61,7 +57,7 @@ export class SchedulerComponent {
     }
   }
 
-  validateFeeCalculation() : boolean {
+  validateTaxCalculation() : boolean {
     this.alert.clear();
 
     if (this.schedule.amount == null || this.schedule.amount <= 0) {
@@ -84,7 +80,7 @@ export class SchedulerComponent {
       this.alert.addErrorMessage('Origem inválida');
     }
 
-    if (this.schedule.destiny.length != 10) {
+    if (this.schedule.destination.length != 10) {
       if(!showAlert) return false;
       this.alert.addErrorMessage('Destino inválido');
     }
@@ -99,7 +95,7 @@ export class SchedulerComponent {
       this.alert.addErrorMessage('Data inválida');
     }
 
-    if (!this.feeCalculated) {
+    if (!this.taxCalculated) {
       if(!showAlert) return false;
       this.alert.addErrorMessage('Por gentileza, realize o calculo da taxa');
     }
@@ -119,7 +115,28 @@ export class SchedulerComponent {
         this.alert.addErrorMessage("Erro ao realizar o calculo da taxa de transferencia, contate o administrador");
          break; 
       }
-   }
+    }
+  }
+
+  onSubmit() {
+    if(this.validateSchedule()) {
+      this.service.saveSchedule(this.schedule).subscribe(
+        {
+          next: (response) => {
+            this.alert.clear();
+            this.alert.addSuccessMessage(response);
+          },
+          error: error => {
+            if(error.status){
+              this.handleError(error);
+            } else {
+              this.alert.clear();
+                this.alert.addErrorMessage("Erro ao realizar o agendamento, contate o administrador");
+            }            
+          }
+        }
+      )
+    }
   }
 
 

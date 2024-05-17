@@ -24,12 +24,8 @@ export class SchedulerService {
 
     return this.httpClient.get<any>(`${this.baseUrl}/transfer/calculate`, {params: getParams});
   }
-  
-  // add(order: any): Observable<any> {
-  //   return this.httpClient.post<any>(`${this.baseUrl}/order/add`, order, this.httpOptions);
-  // }
 
-  // getList(): Observable<any> {
-  //   return this.httpClient.get(`${this.baseUrl}/order/list`, this.httpOptions);
-  // }
+  saveSchedule(schedule: any): Observable<any> {
+    return this.httpClient.post<any>(`${this.baseUrl}/transfer/save`, schedule, this.httpOptions);
+  }
 }
