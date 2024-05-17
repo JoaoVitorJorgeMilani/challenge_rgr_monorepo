@@ -16,6 +16,17 @@ public class Schedule extends BaseEntityAuditable {
     private BigDecimal tax;
     private LocalDate transferDate;
 
+    public static Schedule of(ScheduleDto scheduleDto) {
+        var schedule = new Schedule();
+        schedule.setSource(scheduleDto.getSource());
+        schedule.setDestination(scheduleDto.getDestination());
+        schedule.setAmount(scheduleDto.getAmount());
+        schedule.setTransferDate(scheduleDto.getTransferDate());
+        schedule.setTax(scheduleDto.getTax());
+
+        return schedule;
+    }
+
     public String getSource() {
         return source;
     }

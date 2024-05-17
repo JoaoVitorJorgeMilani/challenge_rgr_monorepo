@@ -9,28 +9,26 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AESCrypt {
+public class AESCrypt implements IEncryptor {
 
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
 
     @Autowired
     private AESKeyStorage aesKeyStorage;
-    private IvParameterSpec iv;
-    
-    public String encrypt(String input) throws InvalidAlgorithmParameterException {
+        
+    public String encrypt(String input)  {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, this.aesKeyStorage.loadKey(), this.aesKeyStorage.loadIv());
             byte[] cipherText = cipher.doFinal(input.getBytes());
             return Base64.getEncoder()
                 .encodeToString(cipherText);    
-        } catch ( InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
+        } catch ( InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | InvalidAlgorithmParameterException e) {
             throw new RuntimeException(e);
         }        
     }

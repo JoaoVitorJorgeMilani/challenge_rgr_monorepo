@@ -12,11 +12,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 @MappedSuperclass
 public abstract class BaseEntityAuditable extends BaseEntity {
     
-    @Column(name = "created_by", updatable = false)
-    private String createdBy;
+    // @Column(name = "created_by", updatable = false)
+    // private String createdBy;
 
-    @Column(name = "updated_by")
-    private String updatedBy;
+    // @Column(name = "updated_by")
+    // private String updatedBy;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -32,15 +32,13 @@ public abstract class BaseEntityAuditable extends BaseEntity {
         if (!(o instanceof BaseEntityAuditable)) return false;
         if (!super.equals(o)) return false;
         BaseEntityAuditable that = (BaseEntityAuditable) o;
-        return createdBy.equals(that.createdBy) &&
-                updatedBy.equals(that.updatedBy) &&
+        return 
                 createdAt.equals(that.createdAt) &&
                 updatedAt.equals(that.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(),
-     createdBy, updatedBy, createdAt, updatedAt);
+        return Objects.hash(super.hashCode(), createdAt, updatedAt);
     }
 }

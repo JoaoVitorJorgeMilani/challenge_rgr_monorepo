@@ -19,5 +19,7 @@ public interface ITransferRepository extends JpaRepository<Taxes, Integer> {
 
     @Query(value = "SELECT * FROM transfer_taxes", nativeQuery = true)
     List<Taxes> getTaxes();
+
+    
    
 }
