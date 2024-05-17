@@ -48,18 +48,4 @@ public class TransferController {
     }
 
 
-
-    @GetMapping("/transfer/teste")
-    public void teste(@RequestParam String encryptedString) {
-        try
-        {           
-            System.out.println("DEBUGGING Controller encrypted: " + encryptedString);
-            String decrypted = aesCrypt.decrypt(encryptedString);
-            System.out.println("DEBUGGING Controller decrypted: " + decrypted);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 }

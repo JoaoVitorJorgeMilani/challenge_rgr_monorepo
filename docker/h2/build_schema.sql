@@ -22,8 +22,6 @@ CREATE TABLE schedules (
 	amount NUMERIC(20, 2) NOT NULL,
 	transfer_date DATE NOT NULL,
 	tax NUMERIC(20, 2) NOT NULL,
-	created_by VARCHAR(255) NOT NULL,
-	updated_by VARCHAR(255) NOT NULL,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
 

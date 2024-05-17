@@ -21,14 +21,14 @@ public class AESCrypt {
     @Autowired
     private AESKeyStorage aesKeyStorage;
         
-    public String encrypt(String input) throws InvalidAlgorithmParameterException {
+    public String encrypt(String input)  {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, this.aesKeyStorage.loadKey(), this.aesKeyStorage.loadIv());
             byte[] cipherText = cipher.doFinal(input.getBytes());
             return Base64.getEncoder()
                 .encodeToString(cipherText);    
-        } catch ( InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
+        } catch ( InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | InvalidAlgorithmParameterException e) {
             throw new RuntimeException(e);
         }        
     }
