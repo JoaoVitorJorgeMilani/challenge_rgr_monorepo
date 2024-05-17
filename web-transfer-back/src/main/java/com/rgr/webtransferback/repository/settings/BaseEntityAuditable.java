@@ -1,6 +1,5 @@
 package com.rgr.webtransferback.repository.settings;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,7 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @MappedSuperclass
-public abstract class BaseEntityAuditable extends BaseEntity implements Serializable {
+public abstract class BaseEntityAuditable extends BaseEntity {
     
     @Column(name = "created_by", updatable = false)
     private String createdBy;
