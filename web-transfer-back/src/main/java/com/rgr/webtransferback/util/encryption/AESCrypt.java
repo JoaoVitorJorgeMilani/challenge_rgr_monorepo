@@ -9,7 +9,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,8 +20,7 @@ public class AESCrypt {
 
     @Autowired
     private AESKeyStorage aesKeyStorage;
-    private IvParameterSpec iv;
-    
+        
     public String encrypt(String input) throws InvalidAlgorithmParameterException {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
