@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AESCrypt {
+public class AESCrypt implements IEncryptor {
 
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
 

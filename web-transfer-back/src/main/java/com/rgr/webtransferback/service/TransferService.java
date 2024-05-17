@@ -15,20 +15,20 @@ import com.rgr.webtransferback.models.Schedule;
 import com.rgr.webtransferback.models.ScheduleDto;
 import com.rgr.webtransferback.repository.IScheduleRepository;
 import com.rgr.webtransferback.repository.ITransferRepository;
-import com.rgr.webtransferback.util.encryption.AESCrypt;
+import com.rgr.webtransferback.util.encryption.IEncryptor;
 
 @Service
 public class TransferService implements ITransferService {
 
     private final ITransferRepository taxRepository;
     private final IScheduleRepository scheduleRepository;
-    private final AESCrypt aesCrypt;
+    private final IEncryptor encryptor;
 
     @Autowired
-    public TransferService(ITransferRepository repository, IScheduleRepository scheduleRepository, AESCrypt aesCrypt) {
+    public TransferService(ITransferRepository repository, IScheduleRepository scheduleRepository, IEncryptor encryptor) {
         this.taxRepository = repository;
         this.scheduleRepository = scheduleRepository;
-        this.aesCrypt = aesCrypt;
+        this.encryptor = encryptor;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class TransferService implements ITransferService {
     @Override
     public ScheduleDto saveSchedule(ScheduleDto schedule) {
         Schedule savedSchedule = this.scheduleRepository.save(Schedule.of(schedule));
-        return ScheduleDto.of(savedSchedule, aesCrypt);
+        return ScheduleDto.of(savedSchedule, encryptor);
     }
     
 }

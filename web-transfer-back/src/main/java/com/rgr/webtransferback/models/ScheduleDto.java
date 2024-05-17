@@ -3,7 +3,7 @@ package com.rgr.webtransferback.models;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.rgr.webtransferback.util.encryption.AESCrypt;
+import com.rgr.webtransferback.util.encryption.IEncryptor;
 
 public class ScheduleDto {
     private String encryptedId;
@@ -13,7 +13,7 @@ public class ScheduleDto {
     private BigDecimal tax;
     private LocalDate transferDate;
 
-    public static ScheduleDto of(Schedule schedule, AESCrypt encryptor) {
+    public static ScheduleDto of(Schedule schedule, IEncryptor encryptor) {
         var scheduleDto = new ScheduleDto();
         scheduleDto.setEncryptedId(encryptor.encrypt(schedule.getId().toString()));
         scheduleDto.setSource(schedule.getSource());
