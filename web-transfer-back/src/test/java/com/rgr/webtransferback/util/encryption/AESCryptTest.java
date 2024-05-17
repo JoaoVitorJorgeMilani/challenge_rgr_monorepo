@@ -10,7 +10,6 @@ import javax.crypto.spec.IvParameterSpec;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -39,15 +38,6 @@ public class AESCryptTest {
 
         when(aesKeyStorageMock.loadKey()).thenReturn(secretKey);
         when(aesKeyStorageMock.loadIv()).thenReturn(ivSpec);
-    }
-
-    @Test
-    void testEncryptDecrypt() throws Exception {
-        String originalText = "teste encrypt";
-        String encryptedText = aesCrypt.encrypt(originalText);
-        String decryptedText = aesCrypt.decrypt(encryptedText);
-
-        assertEquals(originalText, decryptedText);
     }
 
     @ParameterizedTest
