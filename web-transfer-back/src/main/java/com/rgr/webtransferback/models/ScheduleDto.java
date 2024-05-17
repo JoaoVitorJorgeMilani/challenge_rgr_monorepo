@@ -1,14 +1,14 @@
 package com.rgr.webtransferback.models;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class ScheduleDto {
     private String source;
     private String destination;
     private BigDecimal amount;
     private BigDecimal tax;
-    private LocalDateTime date;
+    private LocalDate transferDate;
 
     public String getSource() {
         return source;
@@ -34,11 +34,11 @@ public class ScheduleDto {
     public void setTax(BigDecimal tax) {
         this.tax = tax;
     }
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDate getTransferDate() {
+        return transferDate;
     }
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setTransferDate(LocalDate date) {
+        this.transferDate = date;
     }
 
     

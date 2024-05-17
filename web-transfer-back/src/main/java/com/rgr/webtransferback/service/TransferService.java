@@ -3,9 +3,7 @@ package com.rgr.webtransferback.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import static java.time.temporal.ChronoUnit.DAYS;
-import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -14,16 +12,15 @@ import org.springframework.stereotype.Service;
 
 import com.rgr.webtransferback.exceptions.NoTaxFoundException;
 import com.rgr.webtransferback.models.ScheduleDto;
-import com.rgr.webtransferback.models.Taxes;
-import com.rgr.webtransferback.repository.TransferRepository;
+import com.rgr.webtransferback.repository.ITransferRepository;
 
 @Service
 public class TransferService implements ITransferService {
 
-    private final TransferRepository repository;
+    private final ITransferRepository repository;
 
     @Autowired
-    public TransferService(TransferRepository repository) {
+    public TransferService(ITransferRepository repository) {
         this.repository = repository;
 
     }
@@ -36,9 +33,6 @@ public class TransferService implements ITransferService {
         int daysPeriod = (int) DAYS.between(LocalDate.now(), transferDate);
         var taxPercent = repository.getTax(daysPeriod);
 
-        System.out.println("Tax percent: " + taxPercent);
-        System.out.println("Amount: " + amount);
-
         if(taxPercent == null || taxPercent.compareTo(BigDecimal.ZERO) == -1)
             throw new NoTaxFoundException("Tax not found");
         
@@ -50,22 +44,15 @@ public class TransferService implements ITransferService {
 
     @Override
     public BigDecimal calculateTax(ScheduleDto schedule) throws ValidationException {
-        if(schedule.getDate().isBefore(LocalDateTime.now()))
-            throw new ValidationException("Date cannot be in the past");
-
-        int daysPeriod = (int) DAYS.between(LocalDateTime.now(), schedule.getDate());
-        
-        var tax = repository.getTax(daysPeriod);
-
-        if(tax == null)
-            throw new NoTaxFoundException("Tax not found");
-
+        var tax = calculateTax(schedule.getTransferDate(), schedule.getAmount());
         return tax;
     }
 
     @Override
-    public List<Taxes> getTaxes() {
-        return repository.getTaxes();
+    public ScheduleDto saveSchedule(ScheduleDto schedule) {
+        
+        return schedule;
+        // return repository.saveSchedule(schedule);
     }
     
 }

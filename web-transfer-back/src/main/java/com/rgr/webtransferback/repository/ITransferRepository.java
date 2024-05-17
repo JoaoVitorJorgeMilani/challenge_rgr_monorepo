@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.rgr.webtransferback.models.Taxes;
 
 @Repository
-public interface TransferRepository extends JpaRepository<Taxes, Integer>  {
+public interface ITransferRepository extends JpaRepository<Taxes, Integer> {
    
     // TODO tax calculation in this case should be in a stored procedure, implemented in Query for now.
     @Query(value = "SELECT t.tax FROM transfer_taxes t WHERE t.days_period >= :daysPeriod ORDER BY t.days_period LIMIT 1", nativeQuery = true)
