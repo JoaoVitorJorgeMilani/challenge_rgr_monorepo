@@ -29,8 +29,6 @@ export class SchedulerComponent {
   constructor(private service: SchedulerService) { }
 
   calculateTaxFromInput() {
-    console.log("calculating from input")
-
     if(this.schedule.amount > 0 && !Number.isNaN(Date.parse(this.schedule.transferDate)) && Date.parse(this.schedule.transferDate) >= 0) {
       this.calculateTax();
     }
@@ -124,7 +122,8 @@ export class SchedulerComponent {
         {
           next: (response) => {
             this.alert.clear();
-            this.alert.addSuccessMessage(response);
+            this.alert.addSuccessMessage("Agendamento realizado com sucesso!");
+            this.emptySchedule();
           },
           error: error => {
             if(error.status){
@@ -139,7 +138,17 @@ export class SchedulerComponent {
     }
   }
 
-
+emptySchedule() {
+  this.schedule = {
+    source: '',
+    destination: '',
+    amount: 0,
+    transferDate: '',
+    tax: 0
+  };
+  this.taxCalculated = false;
+  this.currentDate = new Date();
+}
 
 
 
