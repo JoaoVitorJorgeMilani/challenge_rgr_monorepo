@@ -1,4 +1,4 @@
-<div class="card mt-2 bg-light mb-3 ">
+<div class="card mt-3 bg-light mb-5">
     <h5 class="card-header" style="color: var(--rgr-red); text-shadow: 1px 1px 2px pink;">Statement</h5>
     <div class="card-body">
         <app-alert #alert></app-alert>
@@ -10,9 +10,7 @@
                           [data]='schedules'
                           [enableActionView]="true"
                           [enableActionDelete]="true"
-                          [enableActionEdit]="true"
                           (viewItem)="onViewSchedule($event)"
-                          (editItem)="onEditSchedule($event)"
                           (deleteItem)="onDeleteSchedule($event)"
                           [showPagination]="true"
                           [paginationConfig]="paginationConfig"
@@ -22,6 +20,5 @@
             </app-row>
         </app-grid>
     </div>
-
-    <router-outlet></router-outlet>
+    <app-statement-view *ngIf="activeView" [encryptedId]="selectedScheduleId"></app-statement-view>
 </div>

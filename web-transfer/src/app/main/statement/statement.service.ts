@@ -16,7 +16,7 @@ export class StatementService {
   
   constructor(private httpClient: HttpClient) { }
 
-  getSchedules(pagination: PaginationConfig): Observable<any> {
+  getSchedulesPageable(pagination: PaginationConfig): Observable<any> {
     var paginationParams = {
       page: (pagination.currentPage > 0) ? pagination.currentPage - 1 : pagination.currentPage,
       size: pagination.itemsPerPage
@@ -29,4 +29,11 @@ export class StatementService {
     var encoded = encodeURIComponent(encryptedId)
     return this.httpClient.delete(`${this.baseUrl}/transfer/delete?encryptedId=${encoded}`);
   }
+
+  getSchedule(encryptedId : string): Observable<any> {
+    var encoded = encodeURIComponent(encryptedId)
+    return this.httpClient.get(`${this.baseUrl}/transfer/get?encryptedId=${encoded}`);
+  }
 }
+
+

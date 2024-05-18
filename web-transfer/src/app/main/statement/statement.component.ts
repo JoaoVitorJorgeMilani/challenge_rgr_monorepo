@@ -2,6 +2,8 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { StatementService } from './statement.service';
 import { PaginationConfig } from 'src/app/shared/table/pagination-config-model';
 import { AlertComponent } from 'src/app/shared/alert/alert.component';
+import { Router } from '@angular/router';
+import { StatementViewComponent } from './statement-view/statement-view.component';
 
 @Component({
   selector: 'app-statement',
@@ -11,8 +13,9 @@ import { AlertComponent } from 'src/app/shared/alert/alert.component';
 export class StatementComponent implements AfterViewInit {
   
   @ViewChild(AlertComponent) alert!: AlertComponent;
-
+  
   schedules = []
+  selectedScheduleId: any;
 
   paginationConfig : PaginationConfig = {
     itemsPerPage : 6,
@@ -20,7 +23,10 @@ export class StatementComponent implements AfterViewInit {
     totalItems : 0
   };
 
-  constructor(private service: StatementService) { }
+  activeView: boolean = false;
+  activeEdit: boolean = false;
+
+  constructor(private service: StatementService, private router : Router) { }
 
   ngAfterViewInit(): void {
     this.loadSchedules();
@@ -30,7 +36,7 @@ export class StatementComponent implements AfterViewInit {
   loadSchedules() {
     this.alert.clearError();
 
-    this.service.getSchedules(this.paginationConfig).subscribe({
+    this.service.getSchedulesPageable(this.paginationConfig).subscribe({
       next: (response) => {
         this.schedules = response.content;
         this.configPagination(response);
@@ -52,7 +58,8 @@ export class StatementComponent implements AfterViewInit {
 
 
   onViewSchedule(schedule: any) {
-    console.log(schedule);
+    this.selectedScheduleId = schedule.encryptedId;
+    this.activeView = true;    
   }
 
   onEditSchedule(schedule: any) {
