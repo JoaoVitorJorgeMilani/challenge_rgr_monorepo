@@ -3,11 +3,19 @@ package com.rgr.webtransferback.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import static java.time.temporal.ChronoUnit.DAYS;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.rgr.webtransferback.exceptions.NoTaxFoundException;
@@ -58,6 +66,49 @@ public class TransferService implements ITransferService {
     public ScheduleDto saveSchedule(ScheduleDto schedule) {
         Schedule savedSchedule = this.scheduleRepository.save(Schedule.of(schedule));
         return ScheduleDto.of(savedSchedule, encryptor);
+    }
+
+    @Override
+    public Page<ScheduleDto> listSchedule(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Schedule> schedules = scheduleRepository.findAllActive(pageable);
+        
+        List<ScheduleDto> dtos = schedules.getContent()
+                                          .stream()
+                                          .map(schedule -> ScheduleDto.of(schedule, encryptor))
+                                          .collect(Collectors.toList());
+        
+        return new PageImpl<>(dtos, pageable, schedules.getTotalElements());
+
+    }
+
+    @Override
+    public void deleteSchedule(String encryptedId) {
+        try {
+            UUID scheduleId = UUID.fromString(encryptor.decrypt(encryptedId));
+            Schedule schedule = getSchedule(scheduleId);
+
+            if(schedule == null)
+                throw new ValidationException("Invalid id");
+
+            if(schedule.isDeleted())
+                throw new ValidationException("Already deleted");
+
+            schedule.setDeleted(true);
+            schedule.setDeleted_at(LocalDateTime.now());    
+
+            schedule = this.scheduleRepository.save(schedule);
+
+            if(!schedule.isDeleted())
+                throw new ValidationException("Failed to delete");
+
+        } catch (ValidationException e) {
+            throw new ValidationException(e.getMessage());
+        }
+    }
+
+    private Schedule getSchedule(UUID id) {
+        return scheduleRepository.findById(id).orElse(null);
     }
     
 }

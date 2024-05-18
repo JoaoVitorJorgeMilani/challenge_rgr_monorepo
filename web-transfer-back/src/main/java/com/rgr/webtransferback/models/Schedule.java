@@ -2,6 +2,7 @@ package com.rgr.webtransferback.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 
@@ -15,6 +16,8 @@ public class Schedule extends BaseEntityAuditable {
     private BigDecimal amount;
     private BigDecimal tax;
     private LocalDate transferDate;
+    private boolean deleted = false;
+    private LocalDateTime deleted_at;
 
     public static Schedule of(ScheduleDto scheduleDto) {
         var schedule = new Schedule();
@@ -56,6 +59,20 @@ public class Schedule extends BaseEntityAuditable {
     }
     public void setTransferDate(LocalDate transferDate) {
         this.transferDate = transferDate;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+    
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+    public LocalDateTime getDeleted_at() {
+        return deleted_at;
+    }
+    public void setDeleted_at(LocalDateTime deleted_at) {
+        this.deleted_at = deleted_at;
     }
 
     
