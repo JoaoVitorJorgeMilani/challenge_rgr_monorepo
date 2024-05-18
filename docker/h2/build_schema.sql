@@ -22,6 +22,8 @@ CREATE TABLE schedules (
 	amount NUMERIC(20, 2) NOT NULL,
 	transfer_date DATE NOT NULL,
 	tax NUMERIC(20, 2) NOT NULL,
+	deleted BOOLEAN NOT NULL DEFAULT FALSE,
+	deleted_at TIMESTAMP,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
 
