@@ -35,6 +35,7 @@ public class AESCrypt implements IEncryptor {
         }        
     }
 
+    @Override
     public String encryptUuid(UUID uuid) {
         return encrypt(uuid.toString());
     }
@@ -53,6 +54,7 @@ public class AESCrypt implements IEncryptor {
         }        
     }
 
+    @Override
     public UUID decryptUuid(String encryptedUuid) {
         try {
             return UUID.fromString(decrypt(encryptedUuid));    

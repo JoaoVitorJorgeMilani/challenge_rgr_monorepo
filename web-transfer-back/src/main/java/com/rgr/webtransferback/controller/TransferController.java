@@ -55,6 +55,11 @@ public class TransferController {
         this.service.deleteSchedule(encryptedId);
     }
 
+    @GetMapping("/transfer/get")
+    public ScheduleDto getSchedule(@RequestParam String encryptedId) {
+        return this.service.getSchedule(encryptedId);
+    }
+
 
 
 
