@@ -7,7 +7,6 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class SchedulerService {
-
   
   baseUrl = environment.apiUrl;
   httpOptions = {
@@ -17,7 +16,7 @@ export class SchedulerService {
   constructor(private httpClient: HttpClient) { }
 
   getTax(schedule: any): Observable<any> {
-    let getParams = {
+    var getParams = {
       transferDate: schedule.transferDate,
       amount: schedule.amount
     }

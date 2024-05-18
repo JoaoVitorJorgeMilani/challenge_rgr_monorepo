@@ -9,6 +9,8 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { CustomCurrencyPipe } from '../shared/pipes/custom-currency.pipe';
 import { HttpClientModule } from '@angular/common/http';
+import { StatementViewComponent } from './statement/statement-view/statement-view.component';
+import { StatementEditComponent } from './statement/statement-edit/statement-edit.component';
 
 
 
@@ -16,7 +18,9 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     MainComponent,
     SchedulerComponent,
-    StatementComponent
+    StatementComponent,
+    StatementViewComponent,
+    StatementEditComponent
   ],
   imports: [
     HttpClientModule,

@@ -1,7 +1,7 @@
 <div class="card mt-2 bg-light mb-3 ">
     <h5 class="card-header" style="color: var(--rgr-red); text-shadow: 1px 1px 2px pink;">Statement</h5>
     <div class="card-body">
-        <app-alert></app-alert>
+        <app-alert #alert></app-alert>
         <app-grid customClasses="justify-content-md-center">
             <app-row customClasses="mt-3">
                 <app-col col_span="12">
@@ -11,11 +11,17 @@
                           [enableActionView]="true"
                           [enableActionDelete]="true"
                           [enableActionEdit]="true"
-                           />
+                          (viewItem)="onViewSchedule($event)"
+                          (editItem)="onEditSchedule($event)"
+                          (deleteItem)="onDeleteSchedule($event)"
+                          [showPagination]="true"
+                          [paginationConfig]="paginationConfig"
+                          (pageChange)="onPageChange($event)"
+                        />
                 </app-col>
             </app-row>
         </app-grid>
     </div>
 
-
+    <router-outlet></router-outlet>
 </div>
