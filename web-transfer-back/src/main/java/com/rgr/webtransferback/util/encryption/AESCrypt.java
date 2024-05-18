@@ -4,6 +4,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -21,6 +22,7 @@ public class AESCrypt implements IEncryptor {
     @Autowired
     private AESKeyStorage aesKeyStorage;
         
+    @Override
     public String encrypt(String input)  {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -33,6 +35,11 @@ public class AESCrypt implements IEncryptor {
         }        
     }
 
+    public String encryptUuid(UUID uuid) {
+        return encrypt(uuid.toString());
+    }
+
+    @Override
     public String decrypt(String input) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -44,5 +51,13 @@ public class AESCrypt implements IEncryptor {
         } catch ( InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | InvalidAlgorithmParameterException e) {
             throw new RuntimeException(e);
         }        
+    }
+
+    public UUID decryptUuid(String encryptedUuid) {
+        try {
+            return UUID.fromString(decrypt(encryptedUuid));    
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid uuid");
+        }
     }
 }
