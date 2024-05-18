@@ -14,5 +14,6 @@ public interface ITransferService {
     public ScheduleDto saveSchedule(ScheduleDto schedule);
     public Page<ScheduleDto> listSchedule(int page, int size);
     public void deleteSchedule(String encryptedId);
+    public ScheduleDto getSchedule(String encryptedId);
     
 }

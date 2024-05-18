@@ -35,4 +35,13 @@ public abstract class BaseEntityAuditable extends BaseEntity {
     public int hashCode() {
         return Objects.hash(super.hashCode(), createdAt, updatedAt);
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+    
 }

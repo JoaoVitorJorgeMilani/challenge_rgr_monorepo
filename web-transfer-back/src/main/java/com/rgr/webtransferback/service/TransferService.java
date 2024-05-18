@@ -85,7 +85,7 @@ public class TransferService implements ITransferService {
     @Override
     public void deleteSchedule(String encryptedId) {
         try {
-            UUID scheduleId = UUID.fromString(encryptor.decrypt(encryptedId));
+            UUID scheduleId = encryptor.decryptUuid(encryptedId);
             Schedule schedule = getSchedule(scheduleId);
 
             if(schedule == null)
@@ -102,6 +102,22 @@ public class TransferService implements ITransferService {
             if(!schedule.isDeleted())
                 throw new ValidationException("Failed to delete");
 
+        } catch (ValidationException e) {
+            throw new ValidationException(e.getMessage());
+        }
+    }
+
+    @Override
+    public ScheduleDto getSchedule(String encryptedId) {
+        try {
+            UUID scheduleId = encryptor.decryptUuid(encryptedId);
+
+            Schedule schedule = getSchedule(scheduleId);
+
+            if(schedule == null)
+                throw new ValidationException("Schedule not found");
+            
+            return ScheduleDto.of(schedule, encryptor);
         } catch (ValidationException e) {
             throw new ValidationException(e.getMessage());
         }
