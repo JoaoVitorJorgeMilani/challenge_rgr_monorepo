@@ -11,7 +11,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let datum of data" [ngClass]="{ 'table-danger': showDataDanger(datum) }">
+                        <tr *ngFor="let datum of data | paginate: paginationConfig" [ngClass]="{ 'table-danger': showDataDanger(datum) }">
                             <td *ngFor="let prop of property">
                                 <ng-container *ngIf="isCurrencyProperty(prop)">
                                     {{ datum[getProperty(prop)] | customCurrency }}                                    
@@ -38,11 +38,23 @@
                                 <button *ngIf="enableActionDelete" (click)="onDelete(datum)" type="button" class="btn btn-danger btn-sm">
                                     <fa-icon [icon]="faTrash"></fa-icon></button>
                                 <button *ngIf="enableCustomAction" (click)="onCustom(datum)" type="button" [class]="customActionClass" >
+                                    <fa-icon [icon]="customActionIcon"></fa-icon>
                                     {{customActionText}}</button>
                             </td>
                         </tr>
+                        
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-center" *ngIf="showPagination">
+                    <pagination-controls 
+                        (pageChange)="onPageChange($event)" 
+                        >
+                    </pagination-controls>
+                    
+                    
+                </div>
+                
+                
             </div>            
         </app-col>
     </app-row>

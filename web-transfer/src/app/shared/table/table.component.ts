@@ -1,20 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { faEye, faEdit, faTrash, IconDefinition, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { PaginationConfig } from './pagination-config-model';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent  {
-  
+export class TableComponent {
+    
   @Input() title: string = '';
   @Input() headers: string[] = [];
   @Input() property: string[] = [];
   @Input() data: any[] = [];
   
-  @Input() customActionIcon: string = 'fa fa-question-circle-o';
-  @Input() customActionClass: string = 'btn btn-primary';
+  @Input() customActionIcon: IconDefinition = faQuestionCircle;
+  @Input() customActionClass: string = 'btn btn-primary btn-sm';
   @Input() customActionText: string = '';
   @Input() enableActionView: boolean = false;
   @Input() enableActionEdit: boolean = false;
@@ -24,14 +25,25 @@ export class TableComponent  {
   @Input() alertConditionProperty: string = '';
   @Input() alertMessage: string = '';
 
+  @Input() showPagination: boolean = false;
+  @Input() paginationConfig: PaginationConfig = { itemsPerPage : 0, currentPage : 0, totalItems : 0 };
+  
   faEye = faEye;
   faEdit = faEdit;
   faTrash = faTrash;  
-
+  
   @Output() deleteItem = new EventEmitter<any>();
   @Output() editItem = new EventEmitter<any>();
   @Output() viewItem = new EventEmitter<any>();
   @Output() customAction = new EventEmitter<any>();
+  @Output() pageChange = new EventEmitter<any>();
+
+  constructor() { }
+
+  onPageChange(event: any){
+    this.paginationConfig.currentPage = event;
+    this.pageChange.emit(event);
+  }
 
   get enableActions() : boolean {
     return this.enableActionView || this.enableActionDelete || this.enableActionEdit || this.enableCustomAction;

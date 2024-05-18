@@ -19,6 +19,10 @@ export class AlertComponent {
     this.successMessages = [];
   }
 
+  clearError() {
+    this.errorMessages = [];
+  }
+
   addErrorMessage(message: string) {
     this.errorMessages.push(message)
   }
