@@ -12,12 +12,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @MappedSuperclass
 public abstract class BaseEntityAuditable extends BaseEntity {
     
-    // @Column(name = "created_by", updatable = false)
-    // private String createdBy;
-
-    // @Column(name = "updated_by")
-    // private String updatedBy;
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
