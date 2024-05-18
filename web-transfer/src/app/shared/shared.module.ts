@@ -16,6 +16,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { FormsModule } from '@angular/forms';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -38,8 +39,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    FontAwesomeModule
-
+    FontAwesomeModule,
+    NgxPaginationModule
   ],
   exports: [
     RowComponent,
