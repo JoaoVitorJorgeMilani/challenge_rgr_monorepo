@@ -5,8 +5,8 @@
         <app-grid customClasses="justify-content-md-center">
             <app-row customClasses="mt-3">
                 <app-col col_span="12">
-                    <app-table [headers]="['Origem', 'Destino', 'Valor' ]"
-                          [property]="['source', 'destination', 'amount | customCurrency']" 
+                    <app-table [headers]="['Data transferencia', 'Origem', 'Destino', 'Valor' ]"
+                          [property]="['transferDate | customDate : shortDate', 'source', 'destination', 'amount | customCurrency']" 
                           [data]='schedules'
                           [enableActionView]="true"
                           [enableActionDelete]="true"

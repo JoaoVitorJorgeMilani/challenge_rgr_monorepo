@@ -38,6 +38,7 @@ export class StatementComponent implements AfterViewInit {
 
     this.service.getSchedulesPageable(this.paginationConfig).subscribe({
       next: (response) => {
+        console.log(response);
         this.schedules = response.content;
         this.configPagination(response);
       },
