@@ -14,10 +14,20 @@
                         <tr *ngFor="let datum of data | paginate: paginationConfig" [ngClass]="{ 'table-danger': showDataDanger(datum) }">
                             <td *ngFor="let prop of property">
                                 <ng-container *ngIf="isCurrencyProperty(prop)">
-                                    {{ datum[getProperty(prop)] | customCurrency }}                                    
+                                    <div *ngIf="hasPipeParameter(prop)">
+                                        {{ datum[getProperty(prop)] | customCurrency : getPipeParameter(prop) }}                                    
+                                    </div>
+                                    <div *ngIf="!hasPipeParameter(prop)">
+                                        {{ datum[getProperty(prop)] | customCurrency }}                                    
+                                    </div>
                                 </ng-container>
                                 <ng-container *ngIf="isDateProperty(prop)">
-                                    {{ datum[getProperty(prop)] | customDate }}                                    
+                                    <div *ngIf="hasPipeParameter(prop)">
+                                        {{ datum[getProperty(prop)] | customDate : getPipeParameter(prop) }}                                    
+                                    </div>
+                                    <div *ngIf="!hasPipeParameter(prop)">
+                                        {{ datum[getProperty(prop)] | customDate }}                                    
+                                    </div>                                    
                                 </ng-container>
                                 <ng-container *ngIf="hasNoProperty(prop)" #default>
                                     {{ datum[getProperty(prop)] }}

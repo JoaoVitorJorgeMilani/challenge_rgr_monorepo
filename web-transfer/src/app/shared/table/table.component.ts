@@ -59,6 +59,14 @@ export class TableComponent {
     return prop.includes('| customDate');
   }
 
+  hasPipeParameter(prop : string): boolean {
+    return prop.includes(':');
+  }
+
+  getPipeParameter(prop: string): string {
+    return prop.split(':')[1].trim();
+  }
+
   hasNoProperty(prop: string): boolean {
     return !prop.includes('|');
   }
