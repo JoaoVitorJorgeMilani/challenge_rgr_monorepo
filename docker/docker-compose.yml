@@ -16,7 +16,9 @@ services:
       context: ./h2/prepare
       dockerfile: Dockerfile
     restart: "no"
-  
+    depends_on:
+      - rgr-h2
+
   rgr-web-transfer:
     container_name: rgr-web-transfer
     build: 
@@ -32,6 +34,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    restart: "always"
+    restart: on-failure:10
       
     
