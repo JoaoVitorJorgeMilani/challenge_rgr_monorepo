@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "transfer_taxes")
-public class Taxes {
+public class Tax {
     
     @Id
     private int days_period;

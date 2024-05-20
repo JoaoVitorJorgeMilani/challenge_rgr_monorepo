@@ -2,6 +2,7 @@ package com.rgr.webtransferback.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rgr.webtransferback.models.ScheduleDto;
+import com.rgr.webtransferback.models.Tax;
 import com.rgr.webtransferback.service.ITransferService;
 
 @RestController
@@ -28,7 +30,7 @@ public class TransferController {
         this.service = service;
     }
 
-    @GetMapping("/transfer/calculate")
+    @GetMapping("/transfer/tax/calculate")
     public BigDecimal calculateTax(
         @RequestParam("transferDate")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate transferDate, 
@@ -36,6 +38,13 @@ public class TransferController {
     ) {
         return service.calculateTax(transferDate, amount);
     }
+
+    @GetMapping("/transfer/tax/list")
+    public List<Tax> calculateTax() {
+        return service.listTaxes();
+    }
+
+
 
     @PostMapping("/transfer/save")
     public ScheduleDto saveSchedule(@RequestBody ScheduleDto schedule) {

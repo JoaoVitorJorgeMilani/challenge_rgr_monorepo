@@ -20,13 +20,13 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
-import com.rgr.webtransferback.repository.ITransferRepository;
+import com.rgr.webtransferback.repository.ITaxesRepository;
 
 
 public class TransferServiceTest {
  
     @Mock
-    private ITransferRepository repository;
+    private ITaxesRepository repository;
 
     @InjectMocks
     private TransferService sutTransferService;

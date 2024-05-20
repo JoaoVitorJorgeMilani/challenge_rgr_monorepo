@@ -2,7 +2,7 @@
     <app-row customStyles="padding: 0px;">
         <app-col col_span="12">
             <div class="table-responsive ">
-                <table class="table caption-top">
+                <table class="table caption-top {{customTableClasses}}">
                     <caption *ngIf="hasTitle" style="font-size: large; font-weight: bold">{{ title }}</caption>
                     <thead>
                         <tr>
@@ -13,16 +13,37 @@
                     <tbody>
                         <tr *ngFor="let datum of data" [ngClass]="{ 'table-danger': showDataDanger(datum) }">
                             <td *ngFor="let prop of property">
-                                <ng-container *ngIf="isCurrencyProperty(prop)">
-                                    {{ datum[getProperty(prop)] | customCurrency }}                                    
-                                </ng-container>
-                                <ng-container *ngIf="isDateProperty(prop)">
-                                    {{ datum[getProperty(prop)] | customDate }}                                    
-                                </ng-container>
-                                <ng-container *ngIf="hasNoProperty(prop)" #default>
-                                    {{ datum[getProperty(prop)] }}
-                                </ng-container>
-                            </td>
+                                <div *ngIf="hasPipe(prop)">
+                                    <ng-container *ngIf="isCurrencyPipe(prop)">
+                                        <div *ngIf="hasPipeParameter(prop)">
+                                            {{ datum[getProperty(prop)] | customCurrency : getPipeParameter(prop) }}                                    
+                                        </div>
+                                        <div *ngIf="!hasPipeParameter(prop)">
+                                            {{ datum[getProperty(prop)] | customCurrency }}                                    
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="isDatePipe(prop)">
+                                        <div *ngIf="hasPipeParameter(prop)">
+                                            {{ datum[getProperty(prop)] | customDate : getPipeParameter(prop) }}                                    
+                                        </div>
+                                        <div *ngIf="!hasPipeParameter(prop)">
+                                            {{ datum[getProperty(prop)] | customDate }}                                    
+                                        </div>                                    
+                                    </ng-container> 
+                                    <ng-container *ngIf="isPercentPipe(prop)">
+                                        <div *ngIf="hasPipeParameter(prop)">
+                                            {{ datum[getProperty(prop)] | percent : getPipeParameter(prop) }}                                    
+                                        </div>
+                                        <div *ngIf="!hasPipeParameter(prop)">
+                                            {{ datum[getProperty(prop)] | percent }}                                    
+                                        </div>                                    
+                                    </ng-container> 
+                                </div>
+                                    
+                                <ng-container *ngIf="!hasPipe(prop)" #default>
+                                        {{ datum[getProperty(prop)] }}
+                                    </ng-container>
+                                                            </td>
 
                             <td colspan="3" >
                                 <div class="alert alert-danger" role="alert" *ngIf="showDataDanger(datum)">
