@@ -1,0 +1,1 @@
+docker run -d -p 4200:80 --name rgr-web-transfer --network rgr-network rgr-web-transfer-img

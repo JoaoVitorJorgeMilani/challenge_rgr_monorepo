@@ -26,41 +26,41 @@ class AESKeyStorage {
 
     protected SecretKey loadKey() {
         try {
-            if (!new File(this.aesKeyPath).exists()) {
-                generateKey();
+            File keyFile = new File(this.aesKeyPath);
+            if (!keyFile.exists()) {
+                generateAndSaveKey();
             }
 
             byte[] keyBytes = Files.readAllBytes(Paths.get(this.aesKeyPath));
             return new SecretKeySpec(keyBytes, "AES");
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao ler a chave", e);
         }
     }
 
     protected IvParameterSpec loadIv() {
         try {
-            if (!new File(this.aesIvPath).exists()) {
-                generateIv();
+            File ivFile = new File(this.aesIvPath);
+            if (!ivFile.exists()) {
+                generateAndSaveIv();
             }
             byte[] ivBytes = Files.readAllBytes(Paths.get(this.aesIvPath));
             return new IvParameterSpec(ivBytes);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao ler o IV", e);
         }
     }
 
-    private SecretKey generateKey(){
+    private void generateAndSaveKey() {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("AES");
             keyGen.init(256);
             SecretKey secretKey = keyGen.generateKey();
             
             saveKey(secretKey);
-            return secretKey;
-            
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Algoritmo de chave inválido", e);
         }
     }
 
@@ -68,24 +68,18 @@ class AESKeyStorage {
         try {
             Files.write(Paths.get(this.aesKeyPath), key.getEncoded());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao salvar a chave", e);
         }
     }
 
-    private IvParameterSpec generateIv() {
-        byte[] iv = new byte[16];
-        new SecureRandom().nextBytes(iv);
-        IvParameterSpec ivSpec = new IvParameterSpec(iv);
-        saveIv(ivSpec);
-        return ivSpec;
-    }
-
-    private void saveIv(IvParameterSpec iv) {
+    private void generateAndSaveIv() {
         try {
-            Files.write(Paths.get(this.aesIvPath), iv.getIV());
+            byte[] iv = new byte[16];
+            new SecureRandom().nextBytes(iv);
+            IvParameterSpec ivSpec = new IvParameterSpec(iv);
+            Files.write(Paths.get(this.aesIvPath), ivSpec.getIV());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erro ao salvar o IV", e);
         }
     }
-
 }

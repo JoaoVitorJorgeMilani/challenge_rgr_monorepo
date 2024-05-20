@@ -1,0 +1,2 @@
+docker run -d -p 8080:8080 --name rgr-web-transfer-back --network rgr-network rgr-web-transfer-back-img
+# docker exec rgr-h2 java -cp /opt/h2/bin/h2-2.2.222.jar org.h2.tools.RunScript -url "jdbc:h2:tcp://localhost/~/test" -user sa -script /opt/h2/build_schema.sql
