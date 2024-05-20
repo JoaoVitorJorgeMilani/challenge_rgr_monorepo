@@ -13,7 +13,7 @@ import com.rgr.webtransferback.models.Schedule;
 @Repository
 public interface IScheduleRepository extends JpaRepository<Schedule, UUID> {
 
-    @Query(value = "SELECT * FROM Schedules s WHERE s.deleted IS false", nativeQuery = true)
+    @Query(value = "SELECT * FROM transfer_schedules s WHERE s.deleted IS false", nativeQuery = true)
     Page<Schedule> findAllActive(Pageable pageable);
     
 }

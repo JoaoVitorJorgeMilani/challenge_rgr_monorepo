@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 
 import com.rgr.webtransferback.repository.settings.BaseEntityAuditable;
 
-@Entity(name = "schedules")
+@Entity(name = "transfer_schedules")
 public class Schedule extends BaseEntityAuditable {
     
     private String source;
