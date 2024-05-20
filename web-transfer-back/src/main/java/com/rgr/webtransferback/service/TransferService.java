@@ -21,20 +21,21 @@ import org.springframework.stereotype.Service;
 import com.rgr.webtransferback.exceptions.NoTaxFoundException;
 import com.rgr.webtransferback.models.Schedule;
 import com.rgr.webtransferback.models.ScheduleDto;
+import com.rgr.webtransferback.models.Tax;
 import com.rgr.webtransferback.repository.IScheduleRepository;
-import com.rgr.webtransferback.repository.ITransferRepository;
+import com.rgr.webtransferback.repository.ITaxesRepository;
 import com.rgr.webtransferback.util.encryption.IEncryptor;
 
 @Service
 public class TransferService implements ITransferService {
 
-    private final ITransferRepository taxRepository;
+    private final ITaxesRepository taxesRepository;
     private final IScheduleRepository scheduleRepository;
     private final IEncryptor encryptor;
 
     @Autowired
-    public TransferService(ITransferRepository repository, IScheduleRepository scheduleRepository, IEncryptor encryptor) {
-        this.taxRepository = repository;
+    public TransferService(ITaxesRepository repository, IScheduleRepository scheduleRepository, IEncryptor encryptor) {
+        this.taxesRepository = repository;
         this.scheduleRepository = scheduleRepository;
         this.encryptor = encryptor;
     }
@@ -45,7 +46,7 @@ public class TransferService implements ITransferService {
             throw new ValidationException("Date cannot be in the past");
         
         int daysPeriod = (int) DAYS.between(LocalDate.now(), transferDate);
-        var taxPercent = taxRepository.getTax(daysPeriod);
+        var taxPercent = taxesRepository.getTax(daysPeriod);
 
         if(taxPercent == null || taxPercent.compareTo(BigDecimal.ZERO) == -1)
             throw new NoTaxFoundException("Tax not found");
@@ -125,6 +126,11 @@ public class TransferService implements ITransferService {
 
     private Schedule getSchedule(UUID id) {
         return scheduleRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Tax> listTaxes() {
+        return taxesRepository.findAll();
     }
     
 }
