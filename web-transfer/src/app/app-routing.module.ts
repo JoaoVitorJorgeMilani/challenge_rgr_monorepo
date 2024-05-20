@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main/main.component';
 import { SchedulerComponent } from './main/scheduler/scheduler.component';
 import { StatementComponent } from './main/statement/statement.component';
+import { TaxesComponent } from './main/taxes/taxes.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
         path: 'statement',
         component: StatementComponent
       },
+      {
+        path: 'taxes',
+        component: TaxesComponent
+      }
     ]
   }
 ];

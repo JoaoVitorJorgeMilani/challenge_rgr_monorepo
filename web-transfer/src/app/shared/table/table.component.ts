@@ -14,6 +14,7 @@ export class TableComponent {
   @Input() property: string[] = [];
   @Input() data: any[] = [];
   
+  @Input() customTableClasses: string = '';
   @Input() customActionIcon: IconDefinition = faQuestionCircle;
   @Input() customActionClass: string = 'btn btn-primary btn-sm';
   @Input() customActionText: string = '';
@@ -51,12 +52,20 @@ export class TableComponent {
 
   get hasTitle() : boolean { return this.title.length > 0; }
 
-  isCurrencyProperty(prop: string): boolean {
-    return prop.includes('| customCurrency');
+  hasPipe(prop: string){
+    return prop.includes('|');
   }
 
-  isDateProperty(prop: string): boolean {
-    return prop.includes('| customDate');
+  isCurrencyPipe(prop: string): boolean {
+    return prop.includes('customCurrency');
+  }
+
+  isDatePipe(prop: string): boolean {
+    return prop.includes('customDate');
+  }
+
+  isPercentPipe(prop: string): boolean {
+    return prop.includes('percent');
   }
 
   hasPipeParameter(prop : string): boolean {
@@ -65,10 +74,6 @@ export class TableComponent {
 
   getPipeParameter(prop: string): string {
     return prop.split(':')[1].trim();
-  }
-
-  hasNoProperty(prop: string): boolean {
-    return !prop.includes('|');
   }
 
   getProperty(prop: string): string {

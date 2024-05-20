@@ -11,6 +11,7 @@ import { CustomCurrencyPipe } from '../shared/pipes/custom-currency.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { StatementViewComponent } from './statement/statement-view/statement-view.component';
 import { StatementEditComponent } from './statement/statement-edit/statement-edit.component';
+import { TaxesComponent } from './taxes/taxes.component';
 
 
 
@@ -20,7 +21,8 @@ import { StatementEditComponent } from './statement/statement-edit/statement-edi
     SchedulerComponent,
     StatementComponent,
     StatementViewComponent,
-    StatementEditComponent
+    StatementEditComponent,
+    TaxesComponent
   ],
   imports: [
     HttpClientModule,

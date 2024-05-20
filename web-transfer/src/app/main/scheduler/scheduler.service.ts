@@ -21,7 +21,7 @@ export class SchedulerService {
       amount: schedule.amount
     }
 
-    return this.httpClient.get<any>(`${this.baseUrl}/transfer/calculate`, {params: getParams});
+    return this.httpClient.get<any>(`${this.baseUrl}/transfer/tax/calculate`, {params: getParams});
   }
 
   saveSchedule(schedule: any): Observable<any> {
