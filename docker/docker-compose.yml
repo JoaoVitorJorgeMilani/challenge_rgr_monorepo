@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:  
-  h2:
+  rgr-h2:
     container_name: rgr-h2
     build: 
       context: ./h2
@@ -10,14 +10,28 @@ services:
       - 8082:8082
       - 9092:9092
   
-  web-transfer:
+  initialize-db:
+    container_name: rgr-init-db
+    build:
+      context: ./h2/prepare
+      dockerfile: Dockerfile
+    restart: "no"
+  
+  rgr-web-transfer:
     container_name: rgr-web-transfer
     build: 
       context: ../web-transfer
       dockerfile: Dockerfile
     ports:
-      - "4201:80"
-    depends_on:
-      - h2      # just in case...
-    
+      - "4200:80"
+
+  rgr-web-transfer-back:
+    container_name: rgr-web-transfer-back
+    build:
+      context: ../web-transfer-back
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: "always"
+      
     
