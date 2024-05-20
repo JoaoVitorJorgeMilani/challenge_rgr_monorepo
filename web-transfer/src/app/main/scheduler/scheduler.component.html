@@ -1,0 +1,52 @@
+<div class="card mt-2 bg-light mb-3 ">
+  <h5 class="card-header" style="color: var(--rgr-red); text-shadow: 1px 1px 2px pink;">SCHEDULE</h5>
+  <div class="card-body">
+    <app-alert></app-alert>
+    <form (ngSubmit)="onSubmit()">
+      <app-grid>
+        <app-row>
+          <app-col col_span="6">
+            <app-input labelText="Origem" type="text" id="source" name="source" placeholder="XXXXXXXXXX"
+              mask="0000000000" [(value)]="schedule.source" />
+          </app-col>
+          <app-col col_span="6">
+            <app-input labelText="Destino" type="text" id="destination" name="destination" placeholder="XXXXXXXXXX"
+              mask="0000000000" [(value)]="schedule.destination">
+            </app-input>
+          </app-col>
+        </app-row>
+        <app-row>
+          <app-col col_span="6">
+            <app-currency labelText="Valor" id="amount" name="amount" placeholder="Valor"
+              [(value)]="schedule.amount" (valueChange)="calculateTaxFromInput()"></app-currency>
+          </app-col>
+          <app-col col_span="6">
+            <app-datepicker labelText="Data para transferencia" id="transferDate" name="transferDate"
+              [startsToday]='true' [(value)]="schedule.transferDate" (valueChange)="calculateTaxFromInput()"/>
+          </app-col>
+        </app-row>
+        <app-row>
+          <app-col col_span="6">
+            <app-input labelText="Taxa" id="tax" name="tax" type="currency" [(value)]="schedule.tax" [disabled]="true">
+              <div class="input-group-append">
+                <button class="btn btn-secondary  " type="button" (click)="calculateTax()">Calcular</button>
+              </div>
+            </app-input>
+          </app-col>
+
+          <app-col col_span="6">
+            <app-input labelText="Valor Total (valor + taxa)" id="total" name="total" type="currency" [value]="total" [disabled]="true">
+            </app-input>
+          </app-col>
+
+          
+        </app-row>
+        <app-row customClasses="justify-content-center" customStyles="padding-top: 10px;">
+          <app-col col_span="4" customClasses="text-center">
+            <button lazyload type="submit" class="btn btn-primary" [disabled]="!validateSchedule(false)">Agendar</button>
+          </app-col>
+        </app-row>
+      </app-grid>
+    </form>
+  </div>
+</div>

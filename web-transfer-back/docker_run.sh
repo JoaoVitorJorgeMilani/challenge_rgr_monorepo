@@ -1,0 +1,1 @@
+docker run -d -p 8080:8080 --name rgr-web-transfer-back --network rgr-network rgr-web-transfer-back-img

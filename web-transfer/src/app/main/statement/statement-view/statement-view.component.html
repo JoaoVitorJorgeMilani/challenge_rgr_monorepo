@@ -1,0 +1,36 @@
+<div class="card bg-light-subtle mx-3 mb-3 " >
+    <h6 class="card-header">Schedule details</h6>
+    <div class="card-body">
+        <app-grid>
+            <app-row>
+                <app-col col_span="6">
+                    <app-display-field labelText="Data para transferencia" [value]="schedule.transferDate | customDate:'shortDate'"/>
+                </app-col>
+            </app-row>
+            <app-row>
+                <app-col col_span="6">
+                    <app-display-field labelText="Origem" [value]="schedule.source"/>
+                </app-col>
+                <app-col col_span="6">
+                    <app-display-field labelText="Destino" [value]="schedule.destination"/>
+                </app-col>
+            </app-row>
+            <app-row>
+                <app-col col_span="6">
+                    <app-display-field labelText="Valor" [value]="schedule.amount | customCurrency"/>
+                </app-col>
+                <app-col col_span="6">
+                    <app-display-field labelText="Taxa" [value]="schedule.tax | customCurrency"/>
+                </app-col>
+            </app-row>
+            <app-row>
+                <app-col col_span="6">
+                    <app-display-field labelText="Criado em" [value]="schedule.createdAt | customDate"/>
+                </app-col>
+                <app-col col_span="6">
+                    <app-display-field labelText="Última atualização" [value]="schedule.updatedAt | customDate"/>
+                </app-col>
+            </app-row>
+        </app-grid>
+    </div>
+</div>

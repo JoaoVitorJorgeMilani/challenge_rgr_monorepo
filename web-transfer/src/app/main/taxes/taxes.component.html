@@ -1,0 +1,18 @@
+<div class="card mt-3 bg-light mb-5">
+    <h5 class="card-header" style="color: var(--rgr-red); text-shadow: 1px 1px 2px pink;">TAXAS</h5>
+    <div class="card-body">
+        <app-grid customClasses="justify-content-md-center">
+            <app-row customClasses="mt-3" >
+                <app-col col_span="12">
+                    <app-table 
+                    customTableClasses="table-sm table-striped"
+                    [headers]="['Periodo (até) dias', 'Taxa']"
+                    [property]="['days_period ', 'tax_value | percent: 1.2-2']" 
+                    [data]='taxes'                    
+                  />
+                </app-col>
+            </app-row>
+        </app-grid>
+    </div>
+    
+</div>

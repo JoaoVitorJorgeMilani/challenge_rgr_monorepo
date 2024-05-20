@@ -1,0 +1,1 @@
+docker build -t rgr-web-transfer-img .

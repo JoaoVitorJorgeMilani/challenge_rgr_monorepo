@@ -1,0 +1,24 @@
+<div class="card mt-3 bg-light mb-5">
+    <h5 class="card-header" style="color: var(--rgr-red); text-shadow: 1px 1px 2px pink;">Statement</h5>
+    <div class="card-body">
+        <app-alert #alert></app-alert>
+        <app-grid customClasses="justify-content-md-center">
+            <app-row customClasses="mt-3">
+                <app-col col_span="12">
+                    <app-table [headers]="['Data transferencia', 'Origem', 'Destino', 'Valor' ]"
+                          [property]="['transferDate | customDate : shortDate', 'source', 'destination', 'amount | customCurrency']" 
+                          [data]='schedules'
+                          [enableActionView]="true"
+                          [enableActionDelete]="true"
+                          (viewItem)="onViewSchedule($event)"
+                          (deleteItem)="onDeleteSchedule($event)"
+                          [showPagination]="true"
+                          [paginationConfig]="paginationConfig"
+                          (pageChange)="onPageChange($event)"
+                        />
+                </app-col>
+            </app-row>
+        </app-grid>
+    </div>
+    <app-statement-view *ngIf="activeView" [encryptedId]="selectedScheduleId"></app-statement-view>
+</div>
