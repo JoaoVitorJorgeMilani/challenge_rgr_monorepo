@@ -8,7 +8,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 import javax.validation.ValidationException;
@@ -20,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.rgr.webtransferback.config.IAsyncExecutor;
 import com.rgr.webtransferback.exceptions.NoTaxFoundException;
 import com.rgr.webtransferback.models.Schedule;
 import com.rgr.webtransferback.models.ScheduleDto;
@@ -34,10 +34,10 @@ public class TransferService implements ITransferService {
     private final ITaxesRepository taxesRepository;
     private final IScheduleRepository scheduleRepository;
     private final IEncryptor encryptor;
-    private final Executor executor;
+    private final IAsyncExecutor executor;
 
     @Autowired
-    public TransferService(ITaxesRepository repository, IScheduleRepository scheduleRepository, IEncryptor encryptor, Executor executor) {
+    public TransferService(ITaxesRepository repository, IScheduleRepository scheduleRepository, IEncryptor encryptor, IAsyncExecutor executor) {
         this.taxesRepository = repository;
         this.scheduleRepository = scheduleRepository;
         this.encryptor = encryptor;
@@ -74,64 +74,72 @@ public class TransferService implements ITransferService {
     }
 
     @Override
-    public ScheduleDto saveSchedule(ScheduleDto schedule) {
-        Schedule savedSchedule = this.scheduleRepository.save(Schedule.of(schedule));
-        return ScheduleDto.of(savedSchedule, encryptor);
+    public CompletableFuture<ScheduleDto> saveSchedule(ScheduleDto schedule) {
+        return CompletableFuture.supplyAsync(() -> {
+            return ScheduleDto.of(scheduleRepository.save(Schedule.of(schedule)), encryptor);
+        }, this.executor);
     }
 
     @Override
-    public Page<ScheduleDto> listSchedule(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Schedule> schedules = scheduleRepository.findAllActive(pageable);
-
-        List<ScheduleDto> dtos = schedules.getContent()
+    public CompletableFuture<Page<ScheduleDto>> listSchedule(int page, int size) {
+        return CompletableFuture.supplyAsync(() -> {
+            
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Schedule> schedules = scheduleRepository.findAllActive(pageable);
+            List<ScheduleDto> dtos = schedules.getContent()
                 .stream()
                 .map(schedule -> ScheduleDto.of(schedule, encryptor))
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(dtos, pageable, schedules.getTotalElements());
+            return new PageImpl<>(dtos, pageable, schedules.getTotalElements());
 
+        }, this.executor);
     }
 
     @Override
-    public void deleteSchedule(String encryptedId) {
-        try {
-            UUID scheduleId = encryptor.decryptUuid(encryptedId);
-            Schedule schedule = getSchedule(scheduleId);
+    public CompletableFuture<Void> deleteSchedule(String encryptedId) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                UUID scheduleId = encryptor.decryptUuid(encryptedId);
+                Schedule schedule = getSchedule(scheduleId);
+    
+                if (schedule == null)
+                    throw new ValidationException("Invalid id");
+    
+                if (schedule.isDeleted())
+                    throw new ValidationException("Already deleted");
+    
+                schedule.setDeleted(true);
+                schedule.setDeleted_at(LocalDateTime.now());
+    
+                schedule = this.scheduleRepository.save(schedule);
+    
+                if (!schedule.isDeleted())
+                    throw new ValidationException("Failed to delete");
+    
+            } catch (ValidationException e) {
+                throw new ValidationException(e.getMessage());
+            }
 
-            if (schedule == null)
-                throw new ValidationException("Invalid id");
-
-            if (schedule.isDeleted())
-                throw new ValidationException("Already deleted");
-
-            schedule.setDeleted(true);
-            schedule.setDeleted_at(LocalDateTime.now());
-
-            schedule = this.scheduleRepository.save(schedule);
-
-            if (!schedule.isDeleted())
-                throw new ValidationException("Failed to delete");
-
-        } catch (ValidationException e) {
-            throw new ValidationException(e.getMessage());
-        }
+        }, this.executor);
     }
 
     @Override
-    public ScheduleDto getSchedule(String encryptedId) {
-        try {
-            UUID scheduleId = encryptor.decryptUuid(encryptedId);
-
-            Schedule schedule = getSchedule(scheduleId);
-
-            if (schedule == null)
-                throw new ValidationException("Schedule not found");
-
-            return ScheduleDto.of(schedule, encryptor);
-        } catch (ValidationException e) {
-            throw new ValidationException(e.getMessage());
-        }
+    public CompletableFuture<ScheduleDto> getSchedule(String encryptedId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                UUID scheduleId = encryptor.decryptUuid(encryptedId);
+    
+                Schedule schedule = getSchedule(scheduleId);
+    
+                if (schedule == null)
+                    throw new ValidationException("Schedule not found");
+    
+                return ScheduleDto.of(schedule, encryptor);
+            } catch (ValidationException e) {
+                throw new ValidationException(e.getMessage());
+            }    
+        }, this.executor);
     }
 
     private Schedule getSchedule(UUID id) {

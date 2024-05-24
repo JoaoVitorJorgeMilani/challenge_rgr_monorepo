@@ -14,10 +14,10 @@ public interface ITransferService {
     
     public CompletableFuture<BigDecimal> calculateTax(LocalDate transferDate,  BigDecimal amount);
     public CompletableFuture<BigDecimal> calculateTax(ScheduleDto daysPeriod);
-    public ScheduleDto saveSchedule(ScheduleDto schedule);
-    public Page<ScheduleDto> listSchedule(int page, int size);
-    public void deleteSchedule(String encryptedId);
-    public ScheduleDto getSchedule(String encryptedId);
+    public CompletableFuture<ScheduleDto> saveSchedule(ScheduleDto schedule);
+    public CompletableFuture<Page<ScheduleDto>> listSchedule(int page, int size);
+    public CompletableFuture<Void> deleteSchedule(String encryptedId);
+    public CompletableFuture<ScheduleDto> getSchedule(String encryptedId);
     public CompletableFuture<List<Tax>> listTaxes();
     
 }

@@ -48,12 +48,12 @@ public class TransferController {
 
 
     @PostMapping("/transfer/save")
-    public ScheduleDto saveSchedule(@RequestBody ScheduleDto schedule) {
+    public CompletableFuture<ScheduleDto> saveSchedule(@RequestBody ScheduleDto schedule) {
         return this.service.saveSchedule(schedule);        
     }
 
     @GetMapping("/transfer/list")
-    public Page<ScheduleDto> listSchedule(
+    public CompletableFuture<Page<ScheduleDto>> listSchedule(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
         ){
@@ -61,12 +61,12 @@ public class TransferController {
     }
 
     @DeleteMapping("/transfer/delete")
-    public void deleteSchedule(@RequestParam String encryptedId) {        
-        this.service.deleteSchedule(encryptedId);
+    public CompletableFuture<Void> deleteSchedule(@RequestParam String encryptedId) {
+        return this.service.deleteSchedule(encryptedId);        
     }
 
     @GetMapping("/transfer/get")
-    public ScheduleDto getSchedule(@RequestParam String encryptedId) {
+    public CompletableFuture<ScheduleDto> getSchedule(@RequestParam String encryptedId) {
         return this.service.getSchedule(encryptedId);
     }
 

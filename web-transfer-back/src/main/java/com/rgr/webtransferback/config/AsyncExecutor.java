@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
-public class AsyncExecutor implements Executor {
+public class AsyncExecutor implements IAsyncExecutor {
 
     private final ThreadPoolTaskExecutor executor;
 
