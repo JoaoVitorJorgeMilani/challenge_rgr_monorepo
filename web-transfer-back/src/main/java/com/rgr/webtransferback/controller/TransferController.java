@@ -3,6 +3,7 @@ package com.rgr.webtransferback.controller;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class TransferController {
     }
 
     @GetMapping("/transfer/tax/calculate")
-    public BigDecimal calculateTax(
+    public CompletableFuture<BigDecimal> calculateTax(
         @RequestParam("transferDate")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate transferDate, 
         @RequestParam BigDecimal amount
@@ -40,19 +41,19 @@ public class TransferController {
     }
 
     @GetMapping("/transfer/tax/list")
-    public List<Tax> calculateTax() {
+    public CompletableFuture<List<Tax>> calculateTax() {
         return service.listTaxes();
     }
 
 
 
     @PostMapping("/transfer/save")
-    public ScheduleDto saveSchedule(@RequestBody ScheduleDto schedule) {
+    public CompletableFuture<ScheduleDto> saveSchedule(@RequestBody ScheduleDto schedule) {
         return this.service.saveSchedule(schedule);        
     }
 
     @GetMapping("/transfer/list")
-    public Page<ScheduleDto> listSchedule(
+    public CompletableFuture<Page<ScheduleDto>> listSchedule(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
         ){
@@ -60,12 +61,12 @@ public class TransferController {
     }
 
     @DeleteMapping("/transfer/delete")
-    public void deleteSchedule(@RequestParam String encryptedId) {        
-        this.service.deleteSchedule(encryptedId);
+    public CompletableFuture<Void> deleteSchedule(@RequestParam String encryptedId) {
+        return this.service.deleteSchedule(encryptedId);        
     }
 
     @GetMapping("/transfer/get")
-    public ScheduleDto getSchedule(@RequestParam String encryptedId) {
+    public CompletableFuture<ScheduleDto> getSchedule(@RequestParam String encryptedId) {
         return this.service.getSchedule(encryptedId);
     }
 
