@@ -41,7 +41,7 @@ public class TransferController {
     }
 
     @GetMapping("/transfer/tax/list")
-    public List<Tax> calculateTax() {
+    public CompletableFuture<List<Tax>> calculateTax() {
         return service.listTaxes();
     }
 

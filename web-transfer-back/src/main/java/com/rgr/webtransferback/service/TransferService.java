@@ -47,7 +47,7 @@ public class TransferService implements ITransferService {
             throw new ValidationException("Date cannot be in the past");
 
         int daysPeriod = (int) DAYS.between(LocalDate.now(), transferDate);
-        
+
         return taxesRepository.getTax(daysPeriod).thenApply(taxPercent -> {
             if (taxPercent == null) {
                 throw new NoTaxFoundException("Tax not found");
@@ -131,8 +131,8 @@ public class TransferService implements ITransferService {
     }
 
     @Override
-    public List<Tax> listTaxes() {
-        return taxesRepository.findAll();
+    public CompletableFuture<List<Tax>> listTaxes() {
+        return CompletableFuture.supplyAsync(() -> taxesRepository.findAll());
     }
 
 }

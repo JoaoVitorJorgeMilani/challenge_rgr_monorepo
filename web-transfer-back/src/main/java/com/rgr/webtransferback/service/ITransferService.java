@@ -18,6 +18,6 @@ public interface ITransferService {
     public Page<ScheduleDto> listSchedule(int page, int size);
     public void deleteSchedule(String encryptedId);
     public ScheduleDto getSchedule(String encryptedId);
-    public List<Tax> listTaxes();
+    public CompletableFuture<List<Tax>> listTaxes();
     
 }
