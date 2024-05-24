@@ -2,6 +2,7 @@ package com.rgr.webtransferback.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.concurrent.CompletableFuture;
 
 import javax.validation.ValidationException;
 
@@ -34,25 +35,19 @@ public class TransferControllerTest  {
         MockitoAnnotations.initMocks(this);
     }
     
-    // @ParameterizedTest
-    // @ValueSource(ints = {1, 3, 15})
-    // public void calculateTax_ShouldReturnBigDecimal(LocalDate transferDate, BigDecimal amount) {
-    //     when(service.calculateTax(anyInt())).thenReturn(BigDecimal.ONE);
-    //     var result = this.sutController.calculateTax(1);        
-    //     assertNotNull(result);
-    //     assertThat(result, instanceOf(BigDecimal.class));
-    // }
+
 
     @Test
     public void calculateTax_ShouldReturnBigDecimal() {
        
-        when(service.calculateTax(any(), any())).thenReturn(BigDecimal.ONE);
+    when(service.calculateTax(any(), any())).thenReturn(CompletableFuture.completedFuture(BigDecimal.ONE));
 
-        var result = this.sutController.calculateTax(LocalDate.now(), BigDecimal.ONE);
+    var result = this.sutController.calculateTax(LocalDate.now(), BigDecimal.ONE);
         
-        assertNotNull(result);
-        assertThat(result, instanceOf(BigDecimal.class));
-        assertThat(result, is(BigDecimal.ONE));
+    assertNotNull(result);
+    assertThat(result, instanceOf(CompletableFuture.class));
+    assertThat(result.join(), is(BigDecimal.ONE));
+
     }
 
     @Test
