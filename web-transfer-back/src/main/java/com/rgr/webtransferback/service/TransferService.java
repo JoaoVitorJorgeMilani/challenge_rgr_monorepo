@@ -8,6 +8,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 import javax.validation.ValidationException;
@@ -33,12 +34,14 @@ public class TransferService implements ITransferService {
     private final ITaxesRepository taxesRepository;
     private final IScheduleRepository scheduleRepository;
     private final IEncryptor encryptor;
+    private final Executor executor;
 
     @Autowired
-    public TransferService(ITaxesRepository repository, IScheduleRepository scheduleRepository, IEncryptor encryptor) {
+    public TransferService(ITaxesRepository repository, IScheduleRepository scheduleRepository, IEncryptor encryptor, Executor executor) {
         this.taxesRepository = repository;
         this.scheduleRepository = scheduleRepository;
         this.encryptor = encryptor;
+        this.executor = executor;
     }
 
     @Override
@@ -48,15 +51,20 @@ public class TransferService implements ITransferService {
 
         int daysPeriod = (int) DAYS.between(LocalDate.now(), transferDate);
 
-        return taxesRepository.getTax(daysPeriod).thenApply(taxPercent -> {
+        return CompletableFuture.supplyAsync(() -> {
+            BigDecimal taxPercent = taxesRepository.getTax(daysPeriod);
+        
             if (taxPercent == null) {
                 throw new NoTaxFoundException("Tax not found");
             }
+        
             if (taxPercent.compareTo(BigDecimal.ZERO) == 0)
                 return BigDecimal.ZERO;
+            
 
             return amount.divide(new BigDecimal("100")).multiply(taxPercent).setScale(2, RoundingMode.HALF_UP);
-        });
+
+        }, this.executor);
     }
 
     @Override
@@ -132,7 +140,7 @@ public class TransferService implements ITransferService {
 
     @Override
     public CompletableFuture<List<Tax>> listTaxes() {
-        return CompletableFuture.supplyAsync(() -> taxesRepository.findAll());
+        return CompletableFuture.supplyAsync(() -> taxesRepository.findAll(), this.executor);
     }
 
 }
