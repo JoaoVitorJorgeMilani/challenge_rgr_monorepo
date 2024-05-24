@@ -3,6 +3,7 @@ package com.rgr.webtransferback.controller;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class TransferController {
     }
 
     @GetMapping("/transfer/tax/calculate")
-    public BigDecimal calculateTax(
+    public CompletableFuture<BigDecimal> calculateTax(
         @RequestParam("transferDate")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate transferDate, 
         @RequestParam BigDecimal amount

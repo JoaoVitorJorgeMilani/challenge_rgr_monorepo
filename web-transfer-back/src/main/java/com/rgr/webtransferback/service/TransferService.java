@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import static java.time.temporal.ChronoUnit.DAYS;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import javax.validation.ValidationException;
@@ -41,26 +42,28 @@ public class TransferService implements ITransferService {
     }
 
     @Override
-    public BigDecimal calculateTax(LocalDate transferDate,  BigDecimal amount) {
-        if(transferDate.isBefore(LocalDate.now()))
+    public CompletableFuture<BigDecimal> calculateTax(LocalDate transferDate, BigDecimal amount) {
+        if (transferDate.isBefore(LocalDate.now()))
             throw new ValidationException("Date cannot be in the past");
-        
-        int daysPeriod = (int) DAYS.between(LocalDate.now(), transferDate);
-        var taxPercent = taxesRepository.getTax(daysPeriod);
 
-        if(taxPercent == null || taxPercent.compareTo(BigDecimal.ZERO) == -1)
-            throw new NoTaxFoundException("Tax not found");
-        
-        if(taxPercent.compareTo(BigDecimal.ZERO) == 0)
-            return BigDecimal.ZERO;
-        
-        return amount.divide(new BigDecimal("100")).multiply(taxPercent).setScale(2, RoundingMode.HALF_UP);
+        int daysPeriod = (int) DAYS.between(LocalDate.now(), transferDate);
+        CompletableFuture<BigDecimal> taxFuture = taxesRepository.getTax(daysPeriod);
+
+        return taxFuture.thenApply(taxPercent -> {
+            if (taxPercent == null) {
+                throw new NoTaxFoundException("Tax not found");
+            }
+            if (taxPercent.compareTo(BigDecimal.ZERO) == 0)
+                return BigDecimal.ZERO;
+
+            return amount.divide(new BigDecimal("100")).multiply(taxPercent).setScale(2, RoundingMode.HALF_UP);
+        });
     }
 
     @Override
-    public BigDecimal calculateTax(ScheduleDto schedule) throws ValidationException {
-        var tax = calculateTax(schedule.getTransferDate(), schedule.getAmount());
-        return tax;
+    public CompletableFuture<BigDecimal> calculateTax(ScheduleDto schedule) throws ValidationException {
+        return calculateTax(schedule.getTransferDate(), schedule.getAmount());
+        
     }
 
     @Override
@@ -73,12 +76,12 @@ public class TransferService implements ITransferService {
     public Page<ScheduleDto> listSchedule(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Schedule> schedules = scheduleRepository.findAllActive(pageable);
-        
+
         List<ScheduleDto> dtos = schedules.getContent()
-                                          .stream()
-                                          .map(schedule -> ScheduleDto.of(schedule, encryptor))
-                                          .collect(Collectors.toList());
-        
+                .stream()
+                .map(schedule -> ScheduleDto.of(schedule, encryptor))
+                .collect(Collectors.toList());
+
         return new PageImpl<>(dtos, pageable, schedules.getTotalElements());
 
     }
@@ -89,18 +92,18 @@ public class TransferService implements ITransferService {
             UUID scheduleId = encryptor.decryptUuid(encryptedId);
             Schedule schedule = getSchedule(scheduleId);
 
-            if(schedule == null)
+            if (schedule == null)
                 throw new ValidationException("Invalid id");
 
-            if(schedule.isDeleted())
+            if (schedule.isDeleted())
                 throw new ValidationException("Already deleted");
 
             schedule.setDeleted(true);
-            schedule.setDeleted_at(LocalDateTime.now());    
+            schedule.setDeleted_at(LocalDateTime.now());
 
             schedule = this.scheduleRepository.save(schedule);
 
-            if(!schedule.isDeleted())
+            if (!schedule.isDeleted())
                 throw new ValidationException("Failed to delete");
 
         } catch (ValidationException e) {
@@ -115,9 +118,9 @@ public class TransferService implements ITransferService {
 
             Schedule schedule = getSchedule(scheduleId);
 
-            if(schedule == null)
+            if (schedule == null)
                 throw new ValidationException("Schedule not found");
-            
+
             return ScheduleDto.of(schedule, encryptor);
         } catch (ValidationException e) {
             throw new ValidationException(e.getMessage());
@@ -132,5 +135,5 @@ public class TransferService implements ITransferService {
     public List<Tax> listTaxes() {
         return taxesRepository.findAll();
     }
-    
+
 }
